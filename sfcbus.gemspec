@@ -18,5 +18,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.add_dependency             'holidays',    '>=1.0.5'
   gem.add_dependency             'args_parser', '>=0.1.4'
+  gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 end
