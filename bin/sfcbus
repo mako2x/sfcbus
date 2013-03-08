@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+#coding:utf-8
+
+require 'args_parser'
+require 'sfcbus'
+
+# Parse Arguments
+parser = ArgsParser.parse ARGV do
+  arg :from,     'filter by source (options: sfc, shonandai, tsujido)',      :alias => :f
+  arg :to,       'filter by desination (options: sfc, shonandai, tsujido)',  :alias => :t
+  arg :day_type, 'filter by day type (options: weekday, saturday, holiday)', :alias => :d
+  arg :limit,    'list limit (default: 5)',                                  :alias => :l
+  arg :help,     'show help',                                                :alias => :h
+  arg :version,  'print version',                                            :alias => :v
+
+  filter(:from)     { |a| a.to_sym }
+  filter(:to)       { |a| a.to_sym }
+  filter(:day_type) { |a| a.to_sym }
+end
+
+if parser.has_option?(:help)
+  STDERR.puts parser.help
+  exit 1
+end
+
+if parser.has_option?(:version)
+  STDERR.puts SFCBus::VERSION
+  exit 1
+end
+
+
+
+sfcbus = SFCBus.new
+list   = sfcbus.next_list(parser)
+if list.empty?
+  puts '本日のバスは終了しました。'
+  puts "相愛交通（#{SFCBus::TaxiPhoneNumber}）をご利用ください。"
+else
+  puts list[0].day_type_jp
+  puts "#{list[0].from_jp} -> #{list[0].to_jp}"
+  puts '-' * 10
+  list.each do |bus|
+    print bus.inspect_time
+    print " #{bus.type_jp}"
+    puts
+  end
+end
