@@ -1,4 +1,4 @@
-SFCBus
+SFCBus [![Build Status](https://travis-ci.org/mako2x/sfcbus.png?branch=master)](https://travis-ci.org/mako2x/sfcbus)
 ===
 Ruby gem that provides bus information at Keio Univ SFC.
 
